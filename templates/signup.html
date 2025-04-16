@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>smpldev - Sign Up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#6366F1',
+                            50: '#EEF2FF',
+                            100: '#E0E7FF',
+                            200: '#C7D2FE',
+                            300: '#A5B4FC',
+                            400: '#818CF8',
+                            500: '#6366F1',
+                            600: '#4F46E5',
+                            700: '#4338CA',
+                            800: '#3730A3',
+                            900: '#312E81',
+                        },
+                        dark: {
+                            DEFAULT: '#0F172A',
+                            50: '#1E293B',
+                            100: '#334155',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px rgba(99, 102, 241, 0.2)',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0F172A;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
+        }
+        
+        /* Modern gradient text */
+        .gradient-text {
+            background: linear-gradient(90deg, #6366F1 0%, #4F46E5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Frosted glass effect */
+        .glass {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        
+        /* Gradient border */
+        .gradient-border {
+            position: relative;
+            border-radius: 0.75rem;
+            background: #1E293B;
+        }
+        
+        .gradient-border::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            z-index: -1;
+            border-radius: 1rem;
+            background: linear-gradient(45deg, #6366F1, #4F46E5, #8B5CF6, #6366F1);
+            background-size: 200% 200%;
+            animation: gradient-animation 8s ease infinite;
+            opacity: 0.7;
+        }
+        
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Glow effect */
+        .glow-on-hover:hover {
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+        }
+        
+        /* Particle animation */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, 0.3);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Status Indicator Styles */
+        .status-indicator {
+            background-color: rgba(30, 41, 59, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        
+        .status-indicator.visible {
+            opacity: 1;
+        }
+        
+        .status-indicator.success {
+            background-color: rgba(16, 185, 129, 0.8);
+        }
+        
+        .status-indicator.error {
+            background-color: rgba(244, 63, 94, 0.8);
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen flex flex-col items-center justify-center">
+    <!-- Status Indicator -->
+    <div id="status-indicator" class="status-indicator fixed bottom-5 right-5 z-50">
+        <div id="status-icon" class="loading-spinner mr-2"></div>
+        <span id="status-text">Loading...</span>
+    </div>
+
+    <!-- Signup Form -->
+    <div class="w-full max-w-md mx-auto px-4">
+        <div class="text-center mb-8">
+            <div class="flex items-center justify-center mb-4">
+                <svg class="w-10 h-10 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 2L4 13H11L10 22L19 10H12L13 2Z" fill="#6366F1" />
+                </svg>
+                <span class="text-3xl font-bold">smpldev</span>
+            </div>
+            <h1 class="text-2xl font-bold">Create an account</h1>
+            <p class="text-gray-400 mt-2">Start building amazing projects instantly</p>
+        </div>
+
+        <div class="gradient-border p-[2px] rounded-xl mb-4">
+            <div class="glass rounded-xl p-6">
+                <form id="signup-form" class="space-y-4">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-300 mb-1">Username</label>
+                        <input type="text" id="username" name="username" required 
+                            class="w-full px-4 py-2 bg-dark border border-dark-100 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-white">
+                    </div>
+                    
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+                        <input type="password" id="password" name="password" required 
+                            class="w-full px-4 py-2 bg-dark border border-dark-100 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-white">
+                    </div>
+                    
+                    <div>
+                        <label for="confirm-password" class="block text-sm font-medium text-gray-300 mb-1">Confirm Password</label>
+                        <input type="password" id="confirm-password" name="confirm-password" required 
+                            class="w-full px-4 py-2 bg-dark border border-dark-100 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-white">
+                    </div>
+                    
+                    <div id="error-message" class="text-red-500 text-sm hidden"></div>
+                    
+                    <button type="submit" id="submit-btn"
+                        class="w-full bg-primary hover:bg-primary-600 text-white px-5 py-3 rounded-lg transition duration-300 shadow-lg shadow-primary/20 glow-on-hover font-medium">
+                        Create Account
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <p class="text-center text-gray-400 text-sm">
+            Already have an account? 
+            <a href="/login" class="text-primary hover:text-primary-300 transition">Sign in</a>
+        </p>
+    </div>
+
+    <script>
+        // Status indicator functions
+        function showStatus(message, type = 'info') {
+            const statusText = document.getElementById('status-text');
+            const statusIndicator = document.getElementById('status-indicator');
+            const statusIcon = document.getElementById('status-icon');
+            
+            if (!statusText || !statusIndicator || !statusIcon) return;
+
+            statusText.textContent = message;
+            statusIndicator.className = 'status-indicator visible';
+            
+            if (type === 'success') {
+                statusIndicator.classList.add('success');
+                statusIcon.className = '';
+                statusIcon.innerHTML = '&#10003;';
+                setTimeout(hideStatus, 3000);
+            } else if (type === 'error') {
+                statusIndicator.classList.add('error');
+                statusIcon.className = '';
+                statusIcon.innerHTML = '&#10005;';
+                setTimeout(hideStatus, 3000);
+            } else {
+                statusIcon.className = 'loading-spinner';
+                statusIcon.innerHTML = '';
+            }
+        }
+        
+        function hideStatus() {
+            const statusIndicator = document.getElementById('status-indicator');
+            if (!statusIndicator) return;
+            statusIndicator.classList.remove('visible', 'success', 'error');
+        }
+
+        // Handle form submission
+        document.getElementById('signup-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const errorElement = document.getElementById('error-message');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            if (!username || !password || !confirmPassword) {
+                errorElement.textContent = 'Please fill in all fields';
+                errorElement.classList.remove('hidden');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                errorElement.textContent = 'Passwords do not match';
+                errorElement.classList.remove('hidden');
+                return;
+            }
+            
+            errorElement.classList.add('hidden');
+            submitBtn.textContent = 'Creating account...';
+            submitBtn.disabled = true;
+            showStatus('Creating your account...');
+            
+            try {
+                const response = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Signup failed');
+                }
+                
+                // Show success message and redirect
+                showStatus('Account created successfully!', 'success');
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Signup error:', error);
+                errorElement.textContent = error.message || 'Failed to create account. Please try again.';
+                errorElement.classList.remove('hidden');
+                showStatus('Signup failed', 'error');
+                submitBtn.textContent = 'Create Account';
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

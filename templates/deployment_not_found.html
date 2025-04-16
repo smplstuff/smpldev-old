@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deployment Not Found - smpldev</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#6366F1',
+                            50: '#EEF2FF',
+                            100: '#E0E7FF',
+                            200: '#C7D2FE',
+                            300: '#A5B4FC',
+                            400: '#818CF8',
+                            500: '#6366F1',
+                            600: '#4F46E5',
+                            700: '#4338CA',
+                            800: '#3730A3',
+                            900: '#312E81',
+                        },
+                        dark: {
+                            DEFAULT: '#0F172A',
+                            50: '#1E293B',
+                            100: '#334155',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0F172A;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen flex flex-col items-center justify-center">
+    <div class="w-full max-w-lg text-center px-6">
+        <div class="flex items-center justify-center mb-6">
+            <svg class="w-12 h-12 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13 2L4 13H11L10 22L19 10H12L13 2Z" fill="#6366F1" />
+            </svg>
+            <span class="text-3xl font-bold">smpldev</span>
+        </div>
+        
+        <div class="bg-dark-50 p-8 rounded-xl border border-dark-100 shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-primary/70 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 20h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h1 class="text-2xl font-bold mb-4">Deployment Not Found</h1>
+            <p class="text-gray-400 mb-6">
+                The deployment <span class="text-primary font-semibold">{{ deployment_name }}</span> could not be found or is no longer available.
+                {% if message %}
+                <br><span class="block mt-2 text-sm">{{ message }}</span>
+                {% endif %}
+            </p>
+            <a href="/" class="inline-block bg-primary hover:bg-primary-600 text-white px-6 py-3 rounded-lg transition duration-300 font-medium">
+                Return to Homepage
+            </a>
+        </div>
+        
+        <div class="mt-8 text-gray-500 text-sm">
+            <a href="/login" class="hover:text-primary transition">Sign In</a>
+            <span class="mx-2">•</span>
+            <a href="/signup" class="hover:text-primary transition">Sign Up</a>
+        </div>
+    </div>
+</body>
+</html>
