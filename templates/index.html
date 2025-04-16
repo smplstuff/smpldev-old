@@ -1,0 +1,413 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>smpldev - Build Faster</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#6366F1',
+                            50: '#EEF2FF',
+                            100: '#E0E7FF',
+                            200: '#C7D2FE',
+                            300: '#A5B4FC',
+                            400: '#818CF8',
+                            500: '#6366F1',
+                            600: '#4F46E5',
+                            700: '#4338CA',
+                            800: '#3730A3',
+                            900: '#312E81',
+                        },
+                        dark: {
+                            DEFAULT: '#0F172A',
+                            50: '#1E293B',
+                            100: '#334155',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px rgba(99, 102, 241, 0.2)',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0F172A;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
+        }
+        
+        /* Modern gradient text */
+        .gradient-text {
+            background: linear-gradient(90deg, #6366F1 0%, #4F46E5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Frosted glass effect */
+        .glass {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        
+        /* Gradient border */
+        .gradient-border {
+            position: relative;
+            border-radius: 0.75rem;
+            background: #1E293B;
+        }
+        
+        .gradient-border::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            z-index: -1;
+            border-radius: 1rem;
+            background: linear-gradient(45deg, #6366F1, #4F46E5, #8B5CF6, #6366F1);
+            background-size: 200% 200%;
+            animation: gradient-animation 8s ease infinite;
+            opacity: 0.7;
+        }
+        
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Glow effect */
+        .glow-on-hover:hover {
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+        }
+        
+        /* Particle animation */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, 0.3);
+            pointer-events: none;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen overflow-x-hidden" id="particles-js">
+    <!-- Animated particles -->
+    <div id="particles-container" class="fixed inset-0 z-0 pointer-events-none"></div>
+    
+    <!-- Header -->
+    <header class="container mx-auto px-4 py-6 flex justify-between items-center relative z-10">
+        <div class="flex items-center">
+            <svg class="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13 2L4 13H11L10 22L19 10H12L13 2Z" fill="#6366F1" />
+            </svg>
+            <span class="text-xl font-bold">smpldev</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <div id="user-info" class="flex items-center text-sm mr-4">
+                <span class="text-gray-400 mr-2">Signed in as</span>
+                <span id="username-display" class="font-medium text-white"></span>
+            </div>
+            <button id="logout-btn" class="text-sm px-4 py-2 rounded-lg hover:bg-dark-50 transition duration-300 glass">Logout</button>
+            <button class="text-sm bg-primary text-white px-5 py-2 rounded-lg hover:bg-primary-600 transition duration-300 shadow-lg shadow-primary/20 glow-on-hover" onclick="window.location.href='/chat'">Get Started</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 mt-20 text-center relative z-10">
+        <div>
+            <h1 class="text-6xl font-bold mb-4">
+                What do you want to <span class="gradient-text">build</span> today?
+            </h1>
+            <p class="text-gray-400 mb-12 text-lg max-w-2xl mx-auto">
+                Create, deploy, and scale full-stack <span class="font-medium text-white">web</span> and <span class="font-medium text-white">mobile</span> applications in minutes.
+            </p>
+        </div>
+
+        <!-- Improved Chat Bar -->
+        <div class="max-w-2xl mx-auto mb-16">
+            <div class="gradient-border p-[2px] rounded-xl">
+                <div class="glass rounded-xl p-4">
+                    <div class="flex items-center">
+                        <div class="flex-1">
+                            <input 
+                                type="text" 
+                                id="prompt-input"
+                                placeholder="Describe what you want to build..." 
+                                class="bg-transparent w-full outline-none text-white py-2 px-1"
+                            >
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button type="button" class="text-gray-400 hover:text-white transition p-2 rounded-lg hover:bg-dark-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7H8.828a2 2 0 00-1.414.586l-4.828 4.828a1 1 0 000 1.414l4.828 4.828A2 2 0 008.828 19h6.344a2 2 0 001.414-.586l4.828-4.828a1 1 0 000-1.414l-4.828-4.828A2 2 0 0015.172 7z" />
+                                </svg>
+                            </button>
+                            <button type="button" class="text-gray-400 hover:text-white transition p-2 rounded-lg hover:bg-dark-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                </svg>
+                            </button>
+                            <button id="create-btn" class="bg-primary hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition duration-300 flex items-center gap-2 shadow-lg shadow-primary/20 glow-on-hover">
+                                <span>Create</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Start Buttons -->
+        <div class="text-gray-400 text-sm mb-8">or start with a template</div>
+        
+        <div class="flex flex-wrap justify-center gap-3 mb-16">
+            <!-- Tech stack icons with hover effects - updated with modern designs -->
+            <button class="bg-dark-50 hover:bg-dark-100 transition duration-300 rounded-xl px-5 py-3 text-sm flex items-center gap-2 glass glow-on-hover quick-prompt" data-prompt="Create a mobile app landing page with a hero section, features, and download buttons">
+                <span class="text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2h8" />
+                    </svg>
+                </span>
+                Mobile App
+            </button>
+            <button class="bg-dark-50 hover:bg-dark-100 transition duration-300 rounded-xl px-5 py-3 text-sm flex items-center gap-2 glass glow-on-hover quick-prompt" data-prompt="Create a modern web app dashboard with a sidebar, stats cards, and a data table">
+                <span class="text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                </span>
+                Web App
+            </button>
+            <button class="bg-dark-50 hover:bg-dark-100 transition duration-300 rounded-xl px-5 py-3 text-sm flex items-center gap-2 glass glow-on-hover quick-prompt" data-prompt="Create a clean blog homepage with featured posts, categories, and a newsletter signup">
+                <span class="text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                    </svg>
+                </span>
+                Blog
+            </button>
+            <button class="bg-dark-50 hover:bg-dark-100 transition duration-300 rounded-xl px-5 py-3 text-sm flex items-center gap-2 glass glow-on-hover quick-prompt" data-prompt="Create a documentation site with a sidebar navigation, search bar, and code examples">
+                <span class="text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                    </svg>
+                </span>
+                Documentation
+            </button>
+            <button class="bg-dark-50 hover:bg-dark-100 transition duration-300 rounded-xl px-5 py-3 text-sm flex items-center gap-2 glass glow-on-hover quick-prompt" data-prompt="Create a UI component library showcase with buttons, cards, forms, and modals">
+                <span class="text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                    </svg>
+                </span>
+                UI Components
+            </button>
+        </div>
+
+        <!-- Stack Selection - with animated cards -->
+        <div class="text-gray-400 text-sm mb-8">or start a blank project with your favorite stack</div>
+        
+        <div class="flex justify-center flex-wrap gap-10 mb-24">
+            <!-- Tech stack icons with fancy hover effects -->
+            <div class="group quick-prompt" data-prompt="Create a React landing page with a hero section, features, and contact form">
+                <div class="w-16 h-16 flex items-center justify-center glass rounded-xl border border-dark-100/50 group-hover:border-primary/50 transition duration-300 cursor-pointer transform group-hover:-translate-y-2 glow-on-hover">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-400 group-hover:text-primary transition duration-300">
+                        <path d="M12 22L3 17V7L12 2L21 7V17L12 22Z" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="mt-2 text-xs text-gray-500 group-hover:text-primary transition duration-300">React</div>
+            </div>
+            
+            <div class="group quick-prompt" data-prompt="Create a Next.js website with a modern design, dark mode, and responsive layout">
+                <div class="w-16 h-16 flex items-center justify-center glass rounded-xl border border-dark-100/50 group-hover:border-primary/50 transition duration-300 cursor-pointer transform group-hover:-translate-y-2 glow-on-hover">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-400 group-hover:text-primary transition duration-300">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2"/>
+                        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="mt-2 text-xs text-gray-500 group-hover:text-primary transition duration-300">Next.js</div>
+            </div>
+            
+            <div class="group quick-prompt" data-prompt="Create a Vue.js app with a navigation bar, hero section, and product showcase">
+                <div class="w-16 h-16 flex items-center justify-center glass rounded-xl border border-dark-100/50 group-hover:border-primary/50 transition duration-300 cursor-pointer transform group-hover:-translate-y-2 glow-on-hover">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-400 group-hover:text-primary transition duration-300">
+                        <path d="M2 8L8 12L2 16V8Z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M9 6L15 18" stroke="currentColor" stroke-width="2"/>
+                        <path d="M16 8L22 12L16 16V8Z" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="mt-2 text-xs text-gray-500 group-hover:text-primary transition duration-300">Vue</div>
+            </div>
+            
+            <div class="group quick-prompt" data-prompt="Create a Svelte app with animations, interactive components, and a clean design">
+                <div class="w-16 h-16 flex items-center justify-center glass rounded-xl border border-dark-100/50 group-hover:border-primary/50 transition duration-300 cursor-pointer transform group-hover:-translate-y-2 glow-on-hover">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-400 group-hover:text-primary transition duration-300">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 2V12L17 17" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="mt-2 text-xs text-gray-500 group-hover:text-primary transition duration-300">Svelte</div>
+            </div>
+            
+            <div class="group quick-prompt" data-prompt="Create a database-driven app with a login form, dashboard, and data visualization">
+                <div class="w-16 h-16 flex items-center justify-center glass rounded-xl border border-dark-100/50 group-hover:border-primary/50 transition duration-300 cursor-pointer transform group-hover:-translate-y-2 glow-on-hover">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-400 group-hover:text-primary transition duration-300">
+                        <path d="M21 8V16C21 18.7614 16.9706 21 12 21C7.02944 21 3 18.7614 3 16V8" stroke="currentColor" stroke-width="2"/>
+                        <path d="M21 12C21 14.7614 16.9706 17 12 17C7.02944 17 3 14.7614 3 12" stroke="currentColor" stroke-width="2"/>
+                        <path d="M21 8C21 10.7614 16.9706 13 12 13C7.02944 13 3 10.7614 3 8C3 5.23858 7.02944 3 12 3C16.9706 3 21 5.23858 21 8Z" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="mt-2 text-xs text-gray-500 group-hover:text-primary transition duration-300">Database</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="fixed bottom-0 w-full glass border-t border-dark-100/30 py-3 px-4 z-10">
+        <div class="container mx-auto flex justify-between items-center text-xs text-gray-500">
+            <div class="flex items-center">
+                <span class="text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </span>
+                <span class="ml-1">smpldev</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="hover:text-white transition">Help</button>
+                <span>•</span>
+                <button class="hover:text-white transition">Docs</button>
+                <span>•</span>
+                <button class="hover:text-white transition">Terms</button>
+                <button class="hover:text-white transition">Privacy</button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Check user authentication
+        async function checkAuth() {
+            try {
+                const response = await fetch('/api/auth/check');
+                const data = await response.json();
+                
+                if (data.authenticated) {
+                    // Update the username display
+                    document.getElementById('username-display').textContent = data.username;
+                } else {
+                    // Redirect to login if not authenticated
+                    window.location.href = '/login';
+                }
+            } catch (error) {
+                console.error('Error checking authentication:', error);
+                window.location.href = '/login';
+            }
+        }
+        
+        // Logout functionality
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            try {
+                await fetch('/api/auth/logout', { method: 'POST' });
+                window.location.href = '/login';
+            } catch (error) {
+                console.error('Error during logout:', error);
+            }
+        });
+        
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', checkAuth);
+        
+        // Handle create button click
+        document.getElementById('create-btn').addEventListener('click', function() {
+            const promptText = document.getElementById('prompt-input').value.trim();
+            if (promptText) {
+                // Store the prompt in localStorage
+                localStorage.setItem('bolt-prompt', promptText);
+                console.log("Stored prompt:", promptText);
+                
+                // Redirect to chat page
+                window.location.href = '/chat';
+            }
+        });
+        
+        // Handle Enter key in prompt input
+        document.getElementById('prompt-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const promptText = this.value.trim();
+                if (promptText) {
+                    // Store the prompt in localStorage
+                    localStorage.setItem('bolt-prompt', promptText);
+                    console.log("Stored prompt:", promptText);
+                    
+                    // Redirect to chat page
+                    window.location.href = '/chat';
+                }
+            }
+        });
+        
+        // Handle quick prompt buttons
+        document.querySelectorAll('.quick-prompt').forEach(button => {
+            button.addEventListener('click', function() {
+                const promptText = this.getAttribute('data-prompt');
+                if (promptText) {
+                    // Store the prompt in localStorage
+                    localStorage.setItem('bolt-prompt', promptText);
+                    console.log("Stored prompt from quick button:", promptText);
+                    
+                    // Redirect to chat page
+                    window.location.href = '/chat';
+                }
+            });
+        });
+        
+        // Add particle animation
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles-container');
+            
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size between 2 and 10px
+                const size = Math.random() * 8 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                
+                // Random animation
+                const duration = Math.random() * 50 + 10;
+                particle.style.animation = `floating ${duration}s ease-in-out infinite`;
+                particle.style.animationDelay = `${Math.random() * 10}s`;
+                
+                // Random opacity
+                particle.style.opacity = Math.random() * 0.5;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', createParticles);
+    </script>
+</body>
+</html>
